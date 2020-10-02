@@ -1,10 +1,14 @@
 from googleapiclient.discovery import build
 import re
 from datetime import timedelta,date
+import os
 
 
 # Service is Youtube API 
-api_key = 'AIzaSyDbBHaLv3JAFa5d4zVQFz_uzqKszztI8kw'
+
+api_key = os.environ.get('YT_KEY')
+
+
 youtube = build('youtube', 'v3', developerKey=api_key)
 
 
@@ -29,9 +33,9 @@ uploadDates = []
 
 def channelPlaylist(channelID):
 
-    ###################################################
+    ########################################################################
     # Request to API (Channels and playlistItems) - fetch uploads playlist ID and video title
-    ###################################################
+    ########################################################################
     
     ch_response = youtube.channels().list(
         part="contentDetails",
@@ -69,9 +73,9 @@ def channelPlaylist(channelID):
 
     
 
-    ###################################################
+    ########################################################################
     # Request to API (PlaylistItems) - fetch all videos in "upload" playlist  
-    ###################################################
+    ########################################################################
     
     nextPageToken = None
     while True: 
