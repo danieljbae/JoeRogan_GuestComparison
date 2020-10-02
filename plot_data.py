@@ -1,6 +1,10 @@
-import plotly.offline as pyo 
 import plotly.graph_objs as go
+import plotly.io as pio
 import pandas as pd
+
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
 
 
 def create_dashboard(df):
@@ -16,8 +20,11 @@ def create_dashboard(df):
 
     ##################################################
     # make layout
-    x_min = df.loc[df['appearences_rollingCount'].idxmin()]['appearences_rollingCount']
-    x_max = df.loc[df['appearences_rollingCount'].idxmax()]['appearences_rollingCount']
+    x_min = -1
+    x_max = 10
+    
+    # x_min = df.loc[df['appearences_rollingCount'].idxmin()]['appearences_rollingCount']
+    # x_max = df.loc[df['appearences_rollingCount'].idxmax()]['appearences_rollingCount']-30
     fig_dict["layout"]["xaxis"] = {"range": [x_min, x_max+5], "title": "# of Appearences"}
     fig_dict["layout"]["yaxis"] = {"title": "Average Number of Views (rolling)", "type": "log"}
     fig_dict["layout"]["hovermode"] = "closest"
@@ -128,7 +135,17 @@ def create_dashboard(df):
     fig_dict["layout"]["sliders"] = [sliders_dict]
 
     fig = go.Figure(fig_dict)
-
+    fig.update_layout(template="plotly_dark")
+    
     fig.show()
 
 
+
+    ########### Dash - Dashboard ###########
+    # app = dash.Dash()
+    # app.layout = html.Div([
+    #     dcc.Graph(figure=fig)
+    # ])
+    # app.run_server(debug=True)  # Turn off reloader if inside Jupyter
+
+    
