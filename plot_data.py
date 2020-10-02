@@ -6,10 +6,22 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 
+from datetime import datetime, timedelta
+from collections import OrderedDict
+import math
+
 
 def create_dashboard(df):
     # Create plotly figure 
-    years = ["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]
+   
+   
+    # month_years = ["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]
+    start = "2013-01-01"  # first show 
+    end = "2020-10-01" # today
+    dates = [start, end]
+    start, end = [datetime.strptime(_, "%Y-%m-%d") for _ in dates]
+    month_years = list(OrderedDict(((start + timedelta(_)).strftime(r"%Y-%m"), None) for _ in range((end - start).days)).keys())
+
 
     print(df.head())
     fig_dict = {
@@ -21,12 +33,16 @@ def create_dashboard(df):
     ##################################################
     # make layout
     x_min = -1
-    x_max = 10
+    x_max = math.log(50,10)
+
+    y_min = 0
+    y_max = math.log(100000000,10)
+
     
     # x_min = df.loc[df['appearences_rollingCount'].idxmin()]['appearences_rollingCount']
     # x_max = df.loc[df['appearences_rollingCount'].idxmax()]['appearences_rollingCount']-30
-    fig_dict["layout"]["xaxis"] = {"range": [x_min, x_max], "title": "# of Appearences"}
-    fig_dict["layout"]["yaxis"] = {"title": "Total Number of Views (rolling)", "type": "log","autorange": True}
+    fig_dict["layout"]["xaxis"] = {"range": [x_min, x_max], "title": "# of Appearences", "type": "log"}
+    fig_dict["layout"]["yaxis"] = {"range":[y_min,y_max],"title": "Total Number of Views (rolling)", "type": "log"}
     fig_dict["layout"]["hovermode"] = "closest"
     fig_dict["layout"]["dragmode"]='pan'
     
@@ -80,16 +96,17 @@ def create_dashboard(df):
 
     ##################################################
     # make data
-    year = 2013 # 1st JRE episode
+    month_year  = "2013-01" # 1st JRE episode
 
-    df_by_year = df[df["upload_Year"] == year]
+    df_by_year = df[df["upload_month_year"] == month_year]
     data_dict = {
         "x": list(df_by_year["appearences_rollingCount"]),
-        "y": list(df_by_year["views_rollingAvg"]),
+        "y": list(df_by_year["views_rollingSum"]),
         "mode": "markers",
-        "text": list(df_by_year["guestName_year"]),
+        "text": list(df_by_year["guestName_show"]),
         "marker": {
             "color": df_by_year['contraversyFactor'],
+            "colorscale": "rdylgn",   
             "showscale":True,
             "sizemode": "area",
             "sizeref": 2.*max(df_by_year["engagementFactor_rollingAvg"])/(40.**2),
@@ -101,36 +118,39 @@ def create_dashboard(df):
 
 
 
-    ##################################################
+    ################################################## 
     # make frames
-    for year in years:
-        frame = {"data": [], "name": str(year)}
-        df_by_year = df[df["upload_Year"] == int(year)]
+    for month_year in month_years:
+        frame = {"data": [], "name": str(month_year)}
+        df_by_year = df[df["upload_month_year"] == month_year]
 
         data_dict = {
             "x": list(df_by_year["appearences_rollingCount"]),
-            "y": list(df_by_year["views_rollingAvg"]),
+            "y": list(df_by_year["views_rollingSum"]),
             "mode": "markers",
-            "text": list(df_by_year["guest_Names"]),
+            "text": list(df_by_year["guestName_show"]),
             "marker": {
+                "color": df_by_year['contraversyFactor'],
+                "colorscale": "rdylgn",   
+                "showscale":True,
                 "sizemode": "area",
                 "sizeref": 2.*max(df_by_year["engagementFactor_rollingAvg"])/(40.**2),
                 "size": list(df_by_year["engagementFactor_rollingAvg"]),
                 "sizemin": 4
             },
-            "name": year
+            "name": month_year
         }
         frame["data"].append(data_dict)
 
 
         fig_dict["frames"].append(frame)
         slider_step = {"args": [
-            [year],
+            [month_year],
             {"frame": {"duration": 300, "redraw": False},
             "mode": "immediate",
             "transition": {"duration": 300}}
         ],
-            "label": year,
+            "label": month_year,
             "method": "animate"}
         sliders_dict["steps"].append(slider_step)
 
@@ -139,6 +159,7 @@ def create_dashboard(df):
 
     fig = go.Figure(fig_dict)
     fig.update_layout(template="plotly_dark")
+    fig.update_xaxes(rangemode="normal")
     
     fig.show()
 

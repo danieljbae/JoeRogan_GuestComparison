@@ -112,14 +112,8 @@ def channelPlaylist(channelID):
             contraversyFactor = round(float(likeCount/(likeCount+dislikeCount)),2) # bubble color
             engagementFactor = round(float((likeCount+dislikeCount+commentCount)/vidViews),2) # bubble size
             
-            
-            # engagementFactor = round(float(likeCount/dislikeCount*commentCount),2)
             engagementFactors.append(engagementFactor)
             contraversyFactors.append(contraversyFactor)
-            
-            # engagementFactors.append(
-            #     (engagementFactor,likeCount,dislikeCount,commentCount)
-            # )
 
 
         ###################################################
