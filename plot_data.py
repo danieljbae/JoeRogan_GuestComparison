@@ -25,9 +25,10 @@ def create_dashboard(df):
     
     # x_min = df.loc[df['appearences_rollingCount'].idxmin()]['appearences_rollingCount']
     # x_max = df.loc[df['appearences_rollingCount'].idxmax()]['appearences_rollingCount']-30
-    fig_dict["layout"]["xaxis"] = {"range": [x_min, x_max-5], "title": "# of Appearences"}
-    fig_dict["layout"]["yaxis"] = {"title": "Total Number of Views (rolling)", "type": "log"}
+    fig_dict["layout"]["xaxis"] = {"range": [x_min, x_max], "title": "# of Appearences"}
+    fig_dict["layout"]["yaxis"] = {"title": "Total Number of Views (rolling)", "type": "log","autorange": True}
     fig_dict["layout"]["hovermode"] = "closest"
+    fig_dict["layout"]["dragmode"]='pan'
     
     fig_dict["layout"]["updatemenus"] = [
         {
