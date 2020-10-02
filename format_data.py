@@ -1,15 +1,20 @@
 import pandas as pd
 
 
-def create_df(showNums,guestNames,videos_views,engagementFactors,uploadDates):
+def create_df(showNums,guestNames,videos_views,engagementFactors,contraversyFactors,uploadDates):
     n = len(guestNames)
     df = pd.DataFrame()
     df['guest_Names'] = guestNames
     df['show_Num'] = showNums
+    df["guestName_year"] = df["guest_Names"].astype(str) + " - #"+ df["show_Num"].astype(str)
+
+
+        
     df['video_views'] = videos_views
     df['engagement_Factor'] = engagementFactors
     df['upload_Date'] = uploadDates
     df['upload_Year'] = pd.DatetimeIndex(df['upload_Date']).year
+    df['contraversyFactor'] = contraversyFactors
 
 
     df = df[df['guest_Names'] != "No guest found"] 

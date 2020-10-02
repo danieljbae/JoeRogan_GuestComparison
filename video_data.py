@@ -19,6 +19,8 @@ showTitle_pattern = re.compile('Joe Rogan Experience [\#]?([\d]+) - (\w+\s\w+)\s
 showNums, guestNames = [], []
 videos_views = []
 engagementFactors = []
+contraversyFactors = []
+
 uploadDates = []
 
 
@@ -81,7 +83,7 @@ def channelPlaylist(channelID):
         )
         pl_response = pl_request.execute()
 
-        videos_ID = []
+        videos_ID = [] # videos on current page 
         for item in pl_response['items']:
             vidID = item['contentDetails']['videoId']
             videos_ID.append(vidID)
@@ -98,15 +100,22 @@ def channelPlaylist(channelID):
 
         for item in vid_response['items']:
             ### Views
-            vidViews = item['statistics']['viewCount']
+            vidViews = int(item['statistics']['viewCount'])
             videos_views.append(vidViews) 
 
             ### engagementFactor = [(factor, likeCount, disklikeCount, commentCount)...]
             likeCount = int(item['statistics']['likeCount'])
             dislikeCount = int(item['statistics']['dislikeCount'])
             commentCount = int(item['statistics']['commentCount'])
-            engagementFactor = round(float(likeCount/dislikeCount*commentCount),2)
+
+
+            contraversyFactor = round(float(likeCount/(likeCount+dislikeCount)),2) # bubble color
+            engagementFactor = round(float((likeCount+dislikeCount+commentCount)/vidViews),2) # bubble size
+            
+            
+            # engagementFactor = round(float(likeCount/dislikeCount*commentCount),2)
             engagementFactors.append(engagementFactor)
+            contraversyFactors.append(contraversyFactor)
             
             # engagementFactors.append(
             #     (engagementFactor,likeCount,dislikeCount,commentCount)
@@ -140,5 +149,5 @@ def channelPlaylist(channelID):
             break 
     
 
-    return showNums,guestNames,videos_ID,videos_views,engagementFactors,uploadDates
+    return showNums,guestNames,videos_ID,videos_views,engagementFactors,contraversyFactors,uploadDates
 

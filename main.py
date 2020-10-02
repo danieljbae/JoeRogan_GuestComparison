@@ -9,9 +9,9 @@ def main():
 
     # Extract videos in "Uploads" playlist 
     channelID = "UCzQUP1qoWDoEbmsQxvdjxgQ"
-    showNums,guestNames,videos_ID,videos_views,engagementFactors,uploadDates = video_data.channelPlaylist(channelID)
+    showNums,guestNames,videos_ID,videos_views,engagementFactors,contraversyFactors,uploadDates = video_data.channelPlaylist(channelID)
     
-    df = format_data.create_df(showNums,guestNames,videos_views,engagementFactors,uploadDates)
+    df = format_data.create_df(showNums,guestNames,videos_views,engagementFactors,contraversyFactors,uploadDates)
     # print(df.head())
     plot_data.create_dashboard(df)
     

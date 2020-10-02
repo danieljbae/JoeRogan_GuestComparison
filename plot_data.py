@@ -25,8 +25,8 @@ def create_dashboard(df):
     
     # x_min = df.loc[df['appearences_rollingCount'].idxmin()]['appearences_rollingCount']
     # x_max = df.loc[df['appearences_rollingCount'].idxmax()]['appearences_rollingCount']-30
-    fig_dict["layout"]["xaxis"] = {"range": [x_min, x_max+5], "title": "# of Appearences"}
-    fig_dict["layout"]["yaxis"] = {"title": "Average Number of Views (rolling)", "type": "log"}
+    fig_dict["layout"]["xaxis"] = {"range": [x_min, x_max-5], "title": "# of Appearences"}
+    fig_dict["layout"]["yaxis"] = {"title": "Total Number of Views (rolling)", "type": "log"}
     fig_dict["layout"]["hovermode"] = "closest"
     
     fig_dict["layout"]["updatemenus"] = [
@@ -86,8 +86,10 @@ def create_dashboard(df):
         "x": list(df_by_year["appearences_rollingCount"]),
         "y": list(df_by_year["views_rollingAvg"]),
         "mode": "markers",
-        "text": list(df_by_year["guest_Names"]),
+        "text": list(df_by_year["guestName_year"]),
         "marker": {
+            "color": df_by_year['contraversyFactor'],
+            "showscale":True,
             "sizemode": "area",
             "sizeref": 2.*max(df_by_year["engagementFactor_rollingAvg"])/(40.**2),
             "size": list(df_by_year["engagementFactor_rollingAvg"]),
