@@ -1,7 +1,5 @@
 import plotly.graph_objs as go
-import plotly.io as pio
-import pandas as pd
-
+# import plotly.io as pio
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -12,18 +10,14 @@ import math
 
 
 def create_dashboard(df):
-    # Create plotly figure 
+    # Create plotly figure (bubble chart)
    
-   
-    # month_years = ["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]
     start = "2013-01-01"  # first show 
-    end = "2020-10-01" # today
+    end = "2020-10-01" 
     dates = [start, end]
     start, end = [datetime.strptime(_, "%Y-%m-%d") for _ in dates]
     month_years = list(OrderedDict(((start + timedelta(_)).strftime(r"%Y-%m"), None) for _ in range((end - start).days)).keys())
 
-
-    print(df.head())
     fig_dict = {
         "data": [],
         "layout": {},
@@ -31,17 +25,14 @@ def create_dashboard(df):
     }
 
     ##################################################
-    # make layout
+    # Make layout of plot
     x_min = -1
     x_max = math.log(50,10)
 
     y_min = 0
-    y_max = math.log(100000000,10)
+    y_max = math.log(100000000,10) 
 
-    
-    # x_min = df.loc[df['appearences_rollingCount'].idxmin()]['appearences_rollingCount']
-    # x_max = df.loc[df['appearences_rollingCount'].idxmax()]['appearences_rollingCount']-30
-    fig_dict["layout"]["xaxis"] = {"range": [x_min, x_max], "title": "# of Appearences", "type": "log"}
+    fig_dict["layout"]["xaxis"] = {"range": [x_min*0, x_max], "title": "# of Appearences", "type": "log"}
     fig_dict["layout"]["yaxis"] = {"range":[y_min,y_max],"title": "Total Number of Views (rolling)", "type": "log"}
     fig_dict["layout"]["hovermode"] = "closest"
     fig_dict["layout"]["dragmode"]='pan'
@@ -95,7 +86,7 @@ def create_dashboard(df):
     }
 
     ##################################################
-    # make data
+    # Set up data of plot
     month_year  = "2013-01" # 1st JRE episode
 
     df_by_year = df[df["upload_month_year"] == month_year]
@@ -104,12 +95,14 @@ def create_dashboard(df):
         "y": list(df_by_year["views_rollingSum"]),
         "mode": "markers",
         "text": list(df_by_year["guestName_show"]),
+        
+        # Bubble parameters (size and color)
         "marker": {
             "color": df_by_year['contraversyFactor'],
             "colorscale": "rdylgn",   
             "showscale":True,
             "sizemode": "area",
-            "sizeref": 2.*max(df_by_year["engagementFactor_rollingAvg"])/(40.**2),
+            "sizeref": 2*2.*max(df_by_year["engagementFactor_rollingAvg"])/(40.**2),
             "size": list(df_by_year["engagementFactor_rollingAvg"]),
             "sizemin": 4
         },
@@ -119,7 +112,7 @@ def create_dashboard(df):
 
 
     ################################################## 
-    # make frames
+    # Make frames per time period (to animate)
     for month_year in month_years:
         frame = {"data": [], "name": str(month_year)}
         df_by_year = df[df["upload_month_year"] == month_year]
@@ -134,7 +127,7 @@ def create_dashboard(df):
                 "colorscale": "rdylgn",   
                 "showscale":True,
                 "sizemode": "area",
-                "sizeref": 2.*max(df_by_year["engagementFactor_rollingAvg"])/(40.**2),
+                "sizeref": 2*2.*max(df_by_year["engagementFactor_rollingAvg"])/(40.**2),
                 "size": list(df_by_year["engagementFactor_rollingAvg"]),
                 "sizemin": 4
             },
@@ -162,14 +155,5 @@ def create_dashboard(df):
     fig.update_xaxes(rangemode="normal")
     
     fig.show()
-
-
-
-    ########### Dash - Dashboard ###########
-    # app = dash.Dash()
-    # app.layout = html.Div([
-    #     dcc.Graph(figure=fig)
-    # ])
-    # app.run_server(debug=True)  # Turn off reloader if inside Jupyter
 
     
