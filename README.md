@@ -7,9 +7,11 @@ Using the YouTube API, this repo visualizes how different guests for on Joe Roga
 
 The basis for the comparisons are drawn from simple community enagagement stats such as: view count, like count, dislike count, comment count
 
-Some interesting metrics I considered was:
+Some metrics I considered were:
 * guest contraversy with bubble color
 * community engagement with bubble size  
+
+![alt text](https://github.com/danieljbae/Podcast_GuestComparison/blob/main/demo_ss.PNG)
 
 
 ## Getting Started 
@@ -84,6 +86,6 @@ Install packages:
 
 
 
-### Sources:
-* https://github.com/googleapis/google-api-python-client
-* 
+### Sources and references:
+* getting started with Google APIs: https://github.com/googleapis/google-api-python-client
+* YouTube API v3 Documentation: https://developers.google.com/youtube/v3/docs?hl=en
