@@ -3,7 +3,7 @@
 ## About the Project
 Using the YouTube API, I visualized how different guests on Joe Rogan's podcast fared to another (animated across time). 
 
-The basis for the comparisons are drawn from simple community enagagement stats such as: view count, like count, dislike count, comment count
+The basis for the comparisons are from simple community enagagement stats such as: view count, like count, dislike count, comment count
 
 
 Some metrics I considered were (shown in format_data.py):
