@@ -6,7 +6,7 @@ Using the YouTube API, this repo visualizes how different guests on Joe Rogan's 
 The basis for the comparisons are drawn from simple community enagagement stats such as: view count, like count, dislike count, comment count
 
 
-Some metrics I considered were:
+Some metrics I considered were (shown in format_data.py):
 * guest contraversy with bubble color
 * community engagement with bubble size  
 
