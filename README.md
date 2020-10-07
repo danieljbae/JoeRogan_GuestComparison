@@ -1,5 +1,4 @@
 # Podcast_GuestComparison
-Using the YouTube API, this repo visualizes how different guests fare against another (animated across time). 
 
 
 ## About the Project
@@ -10,6 +9,8 @@ The basis for the comparisons are drawn from simple community enagagement stats 
 Some metrics I considered were:
 * guest contraversy with bubble color
 * community engagement with bubble size  
+
+Below is a snippet of the plot:
 
 ![alt text](https://github.com/danieljbae/Podcast_GuestComparison/blob/main/demo_ss.PNG)
 
