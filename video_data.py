@@ -86,7 +86,7 @@ def channelPlaylist(channelID):
         # Request to API (Video) - fetch all Views and Enagagment metrics  
         ###################################################
         video_request = youtube.videos().list(
-            part = 'statistics',
+            part = 'snippet,statistics',
             id =','.join(videos_ID)  # Filtered by playlist vids
         )
         vid_response = video_request.execute()
@@ -110,12 +110,12 @@ def channelPlaylist(channelID):
         # Date Uploaded and Guest Name 
         ###################################################
 
-        vid_response = youtube.videos().list(
-            part = 'snippet',
-            id =','.join(videos_ID), # Filtered by playlist vids
-        ).execute()
+        # vid_response = youtube.videos().list(
+        #     part = 'snippet',
+        #     id =','.join(videos_ID), # Filtered by playlist vids
+        # ).execute()
 
-        for item in vid_response['items']:
+        # for item in vid_response['items']:
 
             ### Date uploaded
             postedate = item['snippet']['publishedAt']
