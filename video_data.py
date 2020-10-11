@@ -20,6 +20,8 @@ engagementFactors = []
 contraversyFactors = []
 uploadDates = []
 
+
+
 def channelPlaylist(channelID):
 
     ########################################################################
@@ -34,7 +36,10 @@ def channelPlaylist(channelID):
     pl_ID_upload = ch_response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
     
 
+
+    ########################################################################
     # Extracting all videos within "Uploads" playlist
+    ########################################################################
     videos =  []
     nextPageToken = None
 
@@ -83,7 +88,9 @@ def channelPlaylist(channelID):
         
 
         ###################################################
-        # Request to API (Video) - fetch all Views and Enagagment metrics  
+        # Request to API (Video) 
+        # - fetch all Views and Enagagment metrics
+        # - Date Uploaded and Guest Name   
         ###################################################
         video_request = youtube.videos().list(
             part = 'snippet,statistics',
@@ -91,31 +98,20 @@ def channelPlaylist(channelID):
         )
         vid_response = video_request.execute()
 
-        # Extracting User engagement metrics
+        
         for item in vid_response['items']:
+            ### Extracting User engagement metrics
             vidViews = int(item['statistics']['viewCount'])
             videos_views.append(vidViews)
             likeCount = int(item['statistics']['likeCount'])
             dislikeCount = int(item['statistics']['dislikeCount'])
             commentCount = int(item['statistics']['commentCount'])
 
-
             contraversyFactor = round(float(likeCount/(likeCount+dislikeCount)),2) # bubble color
             engagementFactor = round(float((likeCount+dislikeCount+commentCount)/vidViews),2) # bubble size
             engagementFactors.append(engagementFactor)
             contraversyFactors.append(contraversyFactor)
 
-
-        ###################################################
-        # Date Uploaded and Guest Name 
-        ###################################################
-
-        # vid_response = youtube.videos().list(
-        #     part = 'snippet',
-        #     id =','.join(videos_ID), # Filtered by playlist vids
-        # ).execute()
-
-        # for item in vid_response['items']:
 
             ### Date uploaded
             postedate = item['snippet']['publishedAt']
@@ -126,7 +122,6 @@ def channelPlaylist(channelID):
             day = int(postedate.group(3)) if postedate else 0
             uploadDate = date(year, month, day)
             uploadDates.append(uploadDate)
-
         
         nextPageToken = pl_response.get('nextPageToken')
         if not nextPageToken: 
