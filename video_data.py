@@ -3,7 +3,7 @@ import re
 from datetime import timedelta,date
 import os
 
-api_key = os.environ.get('YT_KEY')
+api_key = "HERE_YOUR_API_KEY"
 youtube = build('youtube', 'v3', developerKey=api_key)
 
 
