@@ -18,7 +18,7 @@ Below is a snippet of the plot:
 ## Getting Started 
 
 ### Prerequisites
-Start Google project to generate API Key and choose YouTube API service @ https://console.developers.google.com/
+Start Google project to generate API Key and choose [YouTube API service](https://console.developers.google.com/)
 
 #### Windows
 Install virtualenv to manage packages and create enviroment
